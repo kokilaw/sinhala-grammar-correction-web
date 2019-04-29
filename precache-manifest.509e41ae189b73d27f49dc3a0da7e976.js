@@ -32,7 +32,7 @@ self.__precacheManifest = [
     "url": "/sinhala-grammar-correction-web/static/css/main.46fef553.chunk.css"
   },
   {
-    "revision": "093f80a54dcfd90e80d7a3d861970e1e",
+    "revision": "e20391be255526c40929dba57160447f",
     "url": "/sinhala-grammar-correction-web/index.html"
   }
 ];
