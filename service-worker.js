@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/sinhala-deep-grammar-demo/precache-manifest.ea4f6b4f502672b657a3325e78045386.js"
+  "/sinhala-grammar-correction-web/precache-manifest.ea10350636e9777a44b4b879914e9bc1.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/sinhala-deep-grammar-demo/index.html", {
+workbox.routing.registerNavigationRoute("/sinhala-grammar-correction-web/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });

@@ -1,14 +1,14 @@
 {
-  "main.css": "/sinhala-deep-grammar-demo/static/css/main.a68bac85.chunk.css",
-  "main.js": "/sinhala-deep-grammar-demo/static/js/main.0b5de8a7.chunk.js",
-  "main.js.map": "/sinhala-deep-grammar-demo/static/js/main.0b5de8a7.chunk.js.map",
-  "runtime~main.js": "/sinhala-deep-grammar-demo/static/js/runtime~main.30935cc6.js",
-  "runtime~main.js.map": "/sinhala-deep-grammar-demo/static/js/runtime~main.30935cc6.js.map",
-  "static/js/2.8e7b79bb.chunk.js": "/sinhala-deep-grammar-demo/static/js/2.8e7b79bb.chunk.js",
-  "static/js/2.8e7b79bb.chunk.js.map": "/sinhala-deep-grammar-demo/static/js/2.8e7b79bb.chunk.js.map",
-  "index.html": "/sinhala-deep-grammar-demo/index.html",
-  "precache-manifest.ea4f6b4f502672b657a3325e78045386.js": "/sinhala-deep-grammar-demo/precache-manifest.ea4f6b4f502672b657a3325e78045386.js",
-  "service-worker.js": "/sinhala-deep-grammar-demo/service-worker.js",
-  "static/css/main.a68bac85.chunk.css.map": "/sinhala-deep-grammar-demo/static/css/main.a68bac85.chunk.css.map",
-  "static/media/index.css": "/sinhala-deep-grammar-demo/static/media/Poppins-SemiBold.e63b93df.ttf"
+  "main.css": "/sinhala-grammar-correction-web/static/css/main.46fef553.chunk.css",
+  "main.js": "/sinhala-grammar-correction-web/static/js/main.9eec7b37.chunk.js",
+  "main.js.map": "/sinhala-grammar-correction-web/static/js/main.9eec7b37.chunk.js.map",
+  "runtime~main.js": "/sinhala-grammar-correction-web/static/js/runtime~main.b66e3625.js",
+  "runtime~main.js.map": "/sinhala-grammar-correction-web/static/js/runtime~main.b66e3625.js.map",
+  "static/js/2.16528ae8.chunk.js": "/sinhala-grammar-correction-web/static/js/2.16528ae8.chunk.js",
+  "static/js/2.16528ae8.chunk.js.map": "/sinhala-grammar-correction-web/static/js/2.16528ae8.chunk.js.map",
+  "index.html": "/sinhala-grammar-correction-web/index.html",
+  "precache-manifest.ea10350636e9777a44b4b879914e9bc1.js": "/sinhala-grammar-correction-web/precache-manifest.ea10350636e9777a44b4b879914e9bc1.js",
+  "service-worker.js": "/sinhala-grammar-correction-web/service-worker.js",
+  "static/css/main.46fef553.chunk.css.map": "/sinhala-grammar-correction-web/static/css/main.46fef553.chunk.css.map",
+  "static/media/index.css": "/sinhala-grammar-correction-web/static/media/Poppins-SemiBold.e63b93df.ttf"
 }
