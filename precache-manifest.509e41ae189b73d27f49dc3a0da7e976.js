@@ -20,19 +20,19 @@ self.__precacheManifest = [
     "url": "/sinhala-grammar-correction-web/static/js/runtime~main.b66e3625.js"
   },
   {
-    "revision": "107df5bfa3185c626557",
-    "url": "/sinhala-grammar-correction-web/static/js/main.9eec7b37.chunk.js"
+    "revision": "91d7f4531881cb1edd2d",
+    "url": "/sinhala-grammar-correction-web/static/js/main.668c0961.chunk.js"
   },
   {
     "revision": "9181b1335d98efe085ed",
     "url": "/sinhala-grammar-correction-web/static/js/2.16528ae8.chunk.js"
   },
   {
-    "revision": "107df5bfa3185c626557",
+    "revision": "91d7f4531881cb1edd2d",
     "url": "/sinhala-grammar-correction-web/static/css/main.46fef553.chunk.css"
   },
   {
-    "revision": "c84cbe9812caee56234b9400c3dce4be",
+    "revision": "e20391be255526c40929dba57160447f",
     "url": "/sinhala-grammar-correction-web/index.html"
   }
 ];
