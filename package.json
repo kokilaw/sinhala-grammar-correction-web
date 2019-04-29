@@ -1,8 +1,16 @@
 {
   "name": "sinhala-grammar-correction-web",
-  "homepage": "http://kokilaw.github.io/sinhala-deep-grammar-demo",
+  "homepage": "https://kokilaw.github.io/sinhala-grammar-correction-web/",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Kokila Widyaratna",
+    "url": "https://kokilaw.github.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kokilaw/sinhala-grammar-correction-web.git"
+  },
   "dependencies": {
     "axios": "^0.17.1",
     "jwt-decode": "^2.2.0",
@@ -30,7 +38,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^2.2.0",
     "eslint-plugin-react": "^7.3.0",
-    "gh-pages": "^2.0.1",
     "prettier": "^1.6.1",
     "underscore": "^1.9.1"
   },
