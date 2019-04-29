@@ -62,31 +62,7 @@ mark {
   padding: 0px;
 }
 
-button {
-  display: block;
-  width: 200px;
-  margin: 30px auto 0;
-  padding: 10px;
-  border: none;
-  border-radius: 25px;
-  color: #fff;
-  background-color: #58b846;
-  font: 15px Poppins-Medium;
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  appearance: none;
-  cursor: pointer;
-  transition: all 0.4s;
-}
-
-button:hover {
-  box-shadow: 0 0.5em 0.5em -0.4em #8fc866;
-  transform: translateY(-0.25em);
-}
-
-textarea:focus,
-button:focus {
+textarea:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(68, 68, 68, 0.137);
 }

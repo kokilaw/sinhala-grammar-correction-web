@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = 'localhost:8080';
+const BASE_URL = 'http://127.0.0.1:5000';
 
-export default {
-    post: (requestPath, requestBody) =>
-        axios.post(BASE_URL + requestPath, { requestBody }),
-    get: requestPath => axios.get(requestPath)
-};
+export const post = (requestPath, requestBody) =>
+    axios.post(BASE_URL + requestPath, requestBody);
+
+export const get = requestPath => axios.get(requestPath);

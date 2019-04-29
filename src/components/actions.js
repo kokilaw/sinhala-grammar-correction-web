@@ -5,7 +5,7 @@ import {
 } from '../types';
 import { post } from '../api';
 
-const REQUEST_URL = '/sample/path';
+const REQUEST_URL = '/correct';
 
 export function fetchCorrectionsInit() {
     return {
@@ -27,11 +27,16 @@ export function fetchCorrectionsError(error) {
     };
 }
 
-export function loadCorrectionsForSentences(request) {
+export function loadCorrectionsForSentence(request) {
+    // eslint-disable-next-line func-names
     return function(dispatch) {
         dispatch(fetchCorrectionsInit());
         return post(REQUEST_URL, request)
-            .then(response => dispatch(fetchCorrectionsSuccess(response.data)))
-            .catch(error => dispatch(fetchCorrectionsError(error.response)));
+            .then(response => {
+                dispatch(fetchCorrectionsSuccess(response.data));
+            })
+            .catch(error => {
+                dispatch(fetchCorrectionsError(error.response));
+            });
     };
 }
