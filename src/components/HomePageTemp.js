@@ -95,10 +95,6 @@ class HomePageTemp extends React.Component {
         const validInputPattern = new RegExp('[^\u0D80-\u0DFF.\u200d ]');
         const validateExtraSpaces = new RegExp('( +[.!?])');
         const splitSentence = input.match(/\S+/g) || [];
-        console.log(!validInputPattern.test(input));
-        console.log(splitSentence.length);
-        console.log(splitSentence);
-        console.log(input);
         return (
             !validInputPattern.test(input) &&
             !validateExtraSpaces.test(input) &&
@@ -218,6 +214,13 @@ HomePageTemp.propTypes = {
         useBeamSearch: PropTypes.bool.isRequired
     }).isRequired,
     requestingCorrections: PropTypes.bool.isRequired
+};
+
+HomePageTemp.defaultProps = {
+    correctionData: {
+        results: [],
+        useBeamSearch: false
+    }
 };
 
 const mapStateToProps = (state, ownProps) => ({
