@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const BASE_URL = 'http://127.0.0.1:5000';
-const BASE_URL = 'https://35.200.222.127';
+const BASE_URL = 'https://www.sinhalagrammartool.tk/api';
 
 export const post = (requestPath, requestBody) =>
     axios.post(BASE_URL + requestPath, requestBody);
