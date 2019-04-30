@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/sinhala-grammar-correction-web/precache-manifest.509e41ae189b73d27f49dc3a0da7e976.js"
+  "/sinhala-grammar-correction-web/precache-manifest.9c8089cdb833a8c499885bb0c7449b65.js"
 );
 
 workbox.clientsClaim();
