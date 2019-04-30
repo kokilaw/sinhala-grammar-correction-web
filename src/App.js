@@ -8,7 +8,8 @@ import HomePageTemp from './components/HomePageTemp';
 const App = ({ location }) => (
     <div className="limiter">
         {/* <Route location={location} path="/" exact component={HomePage} /> */}
-        <Route location={location} path="/" exact component={HomePageTemp} />
+        {/* <Route location={location} path="/" exact component={HomePageTemp} /> */}
+        <HomePageTemp />
     </div>
 );
 
