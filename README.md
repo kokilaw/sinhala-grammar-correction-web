@@ -1,6 +1,16 @@
+## Available Scripts
+
+### `./scrips/build-script.sh`
+
+Builds the app for production to the `./html.tar.gz` file.<br>
+
+### `./scrips/deploy-script.sh`
+
+Builds the app for production to the `./html.tar.gz` file and sends to the production server available.<br>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Available Default Scripts
 
 In the project directory, you can run:
 
