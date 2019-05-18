@@ -1,0 +1,55 @@
+{
+    /* <div className="p-t-26">
+                                    <div
+                                        className="alert alert-danger m-b-26"
+                                        role="alert"
+                                    >
+                                        <h4 className="alert-heading m-b-8">
+                                            මා විසින් ඇය ආරක්ෂා{' '}
+                                            <span
+                                                style={{
+                                                    backgroundColor: '#e09c9c',
+                                                    borderRadius: '5px',
+                                                    height: '8px',
+                                                    padding: '1px 2px'
+                                                }}
+                                            >
+                                                කෙරෙමි
+                                            </span>
+                                            .
+                                        </h4>
+                                        <hr />
+                                        <p className="mb-0">
+                                            Suggestion: මා විසින් ඇය ආරක්ෂා
+                                            කෙරෙයි.
+                                        </p>
+                                    </div>
+                                </div> */
+}
+{
+    /* <div>
+                                    <div
+                                        className="alert alert-danger m-b-26"
+                                        role="alert"
+                                    >
+                                        <h4 className="alert-heading m-b-8">
+                                            ඔහු මා සමඟ{' '}
+                                            <span
+                                                style={{
+                                                    backgroundColor: '#e09c9c',
+                                                    borderRadius: '5px',
+                                                    height: '8px',
+                                                    padding: '1px 2px'
+                                                }}
+                                            >
+                                                සිනාසුනාය
+                                            </span>
+                                            .
+                                        </h4>
+                                        <hr />
+                                        <p className="mb-0">
+                                            Suggestion: ඔහු මා සමඟ සිනාසුනේය.
+                                        </p>
+                                    </div>
+                                </div> */
+}

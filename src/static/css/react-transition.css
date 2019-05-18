@@ -1,0 +1,45 @@
+.react-fade,
+.react-fade-enter {
+  opacity: 0.01;
+}
+
+.react-fade-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.react-fade-leave {
+  opacity: 1;
+}
+
+.react-fade-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+.react-fade-appear {
+  opacity: 0.01;
+}
+
+.react-fade-appear-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.list-anim {
+  opacity: 0.01;
+}
+
+.list-anim.list-anim-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.list-anim-leave {
+  opacity: 1;
+}
+
+.list-anim-leave.list-anim-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}

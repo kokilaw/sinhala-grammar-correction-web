@@ -2,8 +2,8 @@ import {
     FETCH_CORRECTIONS_FOR_SENTENCES_INIT,
     FETCH_CORRECTIONS_FOR_SENTENCES_SUCCESS,
     FETCH_CORRECTIONS_FOR_SENTENCES_ERROR
-} from '../types';
-import { post } from '../api';
+} from '../../types';
+import { post } from '../../api';
 
 const REQUEST_URL = '/correct';
 

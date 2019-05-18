@@ -1,15 +1,28 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// import HomePage from './components/HomePage';
-import HomePageTemp from './components/HomePageTemp';
+import HomePage from './pages/HomePage/';
+import HomePageDebug from './pages/HomePageDebug/';
+import PageNotFound from './pages/PageNotFound/';
 
 const App = ({ location }) => (
     <div className="limiter">
-        {/* <Route location={location} path="/" exact component={HomePage} /> */}
-        {/* <Route location={location} path="/" exact component={HomePageTemp} /> */}
-        <HomePageTemp />
+        <Switch>
+            <Route location={location} exact path="/" component={HomePage} />
+            <Route
+                location={location}
+                exact
+                path="/debug"
+                component={HomePageDebug}
+            />
+            <Route
+                location={location}
+                exact
+                path="*"
+                component={PageNotFound}
+            />
+        </Switch>
     </div>
 );
 

@@ -11,6 +11,7 @@ import rootReducer from './rootReducer';
 import './static/css/util.css';
 import './static/css/index.css';
 import './static/css/custom.css';
+import './static/css/page-not-found.css';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';

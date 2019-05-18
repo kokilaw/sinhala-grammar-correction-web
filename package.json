@@ -1,6 +1,6 @@
 {
   "name": "sinhala-grammar-correction-web",
-  "homepage": "https://kokilaw.github.io/sinhala-grammar-correction-web/",
+  "homepage": "https://www.sinhalagrammartool.tk/",
   "version": "0.1.0",
   "license": "MIT",
   "author": {
@@ -18,8 +18,10 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^5.0.6",
+    "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "react-transition-group": "^4.0.1",
     "reactstrap": "^8.0.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
@@ -31,6 +33,7 @@
     "validator": "^9.3.0"
   },
   "devDependencies": {
+    "dotenv": "^8.0.0",
     "eslint": "^4.0.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-config-prettier": "^2.4.0",

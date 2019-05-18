@@ -9,6 +9,15 @@ export const Title = styled.span`
     text-align: center;
 `;
 
+export const SubTitle = styled.span`
+    display: block;
+    font-family: Poppins-Medium;
+    font-size: 20px;
+    color: #333333;
+    line-height: 1.2;
+    text-align: center;
+`;
+
 export const LoadingAnimation = styled.div`
     display: inline-block;
     width: 46px;
