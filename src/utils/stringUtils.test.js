@@ -4,7 +4,8 @@ import {
     encodeShortForms,
     validateInputSentence,
     validateInputText,
-    removeSpaceBeforePunctuation
+    removeSpaceBeforePunctuation,
+    getErrorCorrection
 } from './stringUtils';
 
 it('Validation for minimum word length in a sentence', () => {
@@ -121,4 +122,49 @@ it('Removing space before the punctuation', () => {
     expect(
         removeSpaceBeforePunctuation('අපි ඉතා හොඳින් සෙල්ලම් කළෙමු.')
     ).toEqual('අපි ඉතා හොඳින් සෙල්ලම් කළෙමු.');
+});
+
+it('Extracting corrections needed to be replaced with the correction', () => {
+    expect(
+        getErrorCorrection(
+            'අපි ඉතා හොඳින් සෙල්ලම් කළෙමි .',
+            'අපි ඉතා හොඳින් සෙල්ලම් කළෙමු .'
+        )
+    ).toEqual([{ errorPhrase: 'කළෙමි', replacement: 'කළෙමු' }]);
+    expect(
+        getErrorCorrection(
+            'අප ඉතා හොඳින් සෙල්ලම් කළෙමු .',
+            'අපි ඉතා හොඳින් සෙල්ලම් කළෙමු .'
+        )
+    ).toEqual([{ errorPhrase: 'අප', replacement: 'අපි' }]);
+    expect(
+        getErrorCorrection(
+            'අප ඉතා හොඳින් සෙල්ලම් කළෙමි .',
+            'අපි ඉතා හොඳින් සෙල්ලම් කළෙමු .'
+        )
+    ).toEqual([
+        { errorPhrase: 'අප', replacement: 'අපි' },
+        { errorPhrase: 'කළෙමි', replacement: 'කළෙමු' }
+    ]);
+    expect(
+        getErrorCorrection(
+            'අද ඉතා ඉක්මනින් මා පාසලට ගියෙමි.',
+            'අද ඉතා ඉක්මනින් මම පාසලට ගියෙමි.'
+        )
+    ).toEqual([{ errorPhrase: 'මා', replacement: 'මම' }]);
+    expect(
+        getErrorCorrection(
+            'අද ඉතා ඉක්මනින් මා පාසලට ගියෙමු.',
+            'අද ඉතා ඉක්මනින් මම පාසලට ගියෙමි.'
+        )
+    ).toEqual([
+        { errorPhrase: 'මා', replacement: 'මම' },
+        { errorPhrase: 'ගියෙමු.', replacement: 'ගියෙමි.' }
+    ]);
+    expect(
+        getErrorCorrection(
+            'අද ඉතා ඉක්මනින් මම පාසලට ගියෙමි.',
+            'අද ඉතා ඉක්මනින් මම පාසලට ගියෙමි.'
+        )
+    ).toEqual([]);
 });

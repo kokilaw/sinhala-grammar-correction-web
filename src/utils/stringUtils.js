@@ -139,3 +139,42 @@ export const validateInputText = inputText => {
 
     return invalidSenteces;
 };
+
+export const getErrorCorrection = (inputSentence, predictedSentence) => {
+    const splitInputSentence = inputSentence.split(' ');
+    const splitPredictedSentence = predictedSentence.split(' ');
+
+    const results = [];
+
+    if (inputSentence === predictedSentence) {
+        return results;
+    }
+
+    mainLoop: for (let i = 0; i < splitInputSentence.length; i++) {
+        let tempErrorPhrase = '';
+        let tempReplacement = '';
+
+        for (let j = i; j < splitPredictedSentence.length; j++) {
+            if (splitInputSentence[i] === splitPredictedSentence[j]) {
+                continue mainLoop;
+            } else {
+                tempErrorPhrase = splitInputSentence[i];
+                if (
+                    splitInputSentence[i + 1] === splitPredictedSentence[j + 1]
+                ) {
+                    tempReplacement = splitPredictedSentence[j];
+                    continue;
+                }
+            }
+        }
+
+        if (tempErrorPhrase !== '' || tempReplacement !== '') {
+            results.push({
+                errorPhrase: tempErrorPhrase,
+                replacement: tempReplacement
+            });
+        }
+    }
+
+    return results;
+};
