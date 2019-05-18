@@ -1,0 +1,29 @@
+import React from 'react';
+
+const DebugValidationError = () => (
+    <div className="alert alert-danger m-b-26" role="alert">
+        <h4 className="alert-heading m-b-8">Unsupported Input Format</h4>
+        <p>
+            Please note that only sentences with following characteristics are
+            supported by the system currently.
+        </p>
+        <ul className="validation m-l-10">
+            <li>
+                - Should contain only sinhala unicode characters and ends with a
+                fullstop.
+            </li>
+            <li>
+                - Numbers and other punctuation marks are not supported yet.
+            </li>
+            <li>- No additional white spaces are supported.</li>
+            <li>
+                - Only Sentence within word limit 3-7 are currently supported.
+            </li>
+        </ul>
+
+        <hr />
+        <p className="mb-0">E.g: ක්‍රීඩකයා ඉතා වේගයෙන් දිව්වේය.</p>
+    </div>
+);
+
+export default DebugValidationError;

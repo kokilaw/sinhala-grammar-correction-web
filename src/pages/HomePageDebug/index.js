@@ -9,47 +9,14 @@ import {
     Input,
     Button,
     LoadingAnimation
-} from '../../components/StyledComponents';
+} from '../../components/CommonStyledComponents';
+import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
+import JSONFormatter from '../../components/JSONFormatter';
+import DebugValidationError from '../../components/DebugValidationError';
 
 import '../../static/css/react-transition.css';
 
 import { loadCorrectionsForSentence } from './actions';
-
-const PrettyPrintJson = props => (
-    <div
-        className="alert alert-success"
-        role="alert"
-        style={{ marginTop: '30px' }}
-    >
-        <pre>{JSON.stringify(props.data, null, 2)}</pre>
-    </div>
-);
-
-const ValidationError = () => (
-    <div className="alert alert-danger m-b-26" role="alert">
-        <h4 className="alert-heading m-b-8">Unsupported Input Format</h4>
-        <p>
-            Please note that only sentences with following characteristics are
-            supported by the system currently.
-            <ul className="m-l-10">
-                <li>
-                    - Should contain only sinhala unicode characters and ends
-                    with a fullstop.
-                </li>
-                <li>
-                    - Numbers and other punctuation marks are not supported yet.
-                </li>
-                <li>- No additional white spaces are supported.</li>
-                <li>
-                    - Only Sentence within word limit 3-7 are currently
-                    supported.
-                </li>
-            </ul>
-        </p>
-        <hr />
-        <p className="mb-0">E.g: ක්‍රීඩකයා ඉතා වේගයෙන් දිව්වේය.</p>
-    </div>
-);
 
 class HomePageDebug extends React.Component {
     constructor(props) {
@@ -160,7 +127,7 @@ class HomePageDebug extends React.Component {
                             <Title className="p-b-26">
                                 Sinhala Grammar Tool Beta
                             </Title>
-                            {showValidationError && <ValidationError />}
+                            {showValidationError && <DebugValidationError />}
                             <div>
                                 <div>
                                     <Input
@@ -168,50 +135,15 @@ class HomePageDebug extends React.Component {
                                         onChange={this.onInputValueChange}
                                         disabled={requestingCorrections}
                                     />
-                                    <div
-                                        style={{
-                                            textAlign: 'center',
-                                            padding: '20px'
-                                        }}
-                                    >
-                                        <label
-                                            htmlFor="greedyButton"
-                                            className="radio-inline"
-                                        >
-                                            <input
-                                                id="greedyButton"
-                                                value="greedy"
-                                                type="radio"
-                                                name="optradio"
-                                                onChange={this.setSearchType}
-                                                defaultChecked={
-                                                    searchType === 'greedy'
-                                                }
-                                                disabled={requestingCorrections}
-                                            />
-                                            Use Greedy Search
-                                        </label>
-                                        <label
-                                            htmlFor="beemButton"
-                                            className="radio-inline"
-                                            style={{
-                                                paddingLeft: '10px'
-                                            }}
-                                        >
-                                            <input
-                                                id="beemButton"
-                                                value="beem"
-                                                type="radio"
-                                                name="optradio"
-                                                onChange={this.setSearchType}
-                                                defaultChecked={
-                                                    searchType === 'beem'
-                                                }
-                                                disabled={requestingCorrections}
-                                            />
-                                            Use Beam Search
-                                        </label>
-                                    </div>
+                                    <SearchTypeRadioButtons
+                                        beamSearchLabel="Use Beam Search"
+                                        greedySearchLabel="Use Greedy Search"
+                                        searchType={searchType}
+                                        requestingCorrections={
+                                            requestingCorrections
+                                        }
+                                        setSearchType={this.setSearchType}
+                                    />
                                 </div>
                                 {initState !== 'LOADING' && (
                                     <Button
@@ -236,9 +168,7 @@ class HomePageDebug extends React.Component {
                                         <SubTitle className="p-t-26">
                                             Suggestions
                                         </SubTitle>
-                                        <PrettyPrintJson
-                                            data={correctionData}
-                                        />
+                                        <JSONFormatter data={correctionData} />
                                     </div>
                                 )}
                             </div>

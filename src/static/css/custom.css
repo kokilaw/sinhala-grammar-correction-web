@@ -71,3 +71,10 @@ textarea:hover {
   outline: none;
   box-shadow: 0 0 0 2px rgba(68, 68, 68, 0.137);
 }
+
+.validation li {
+  font-family: Poppins-Regular;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+}

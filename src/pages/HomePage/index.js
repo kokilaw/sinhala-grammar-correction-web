@@ -1,7 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
+
+import { loadCorrectionsForSentence } from './actions';
+
+import '../../static/css/react-transition.css';
 
 import {
     Title,
@@ -9,47 +13,10 @@ import {
     Input,
     Button,
     LoadingAnimation
-} from '../../components/StyledComponents';
-
-import '../../static/css/react-transition.css';
-
-import { loadCorrectionsForSentence } from './actions';
-
-const PrettyPrintJson = props => (
-    <div
-        className="alert alert-success"
-        role="alert"
-        style={{ marginTop: '30px' }}
-    >
-        <pre>{JSON.stringify(props.data, null, 2)}</pre>
-    </div>
-);
-
-const ValidationError = () => (
-    <div className="alert alert-danger m-b-26" role="alert">
-        <h4 className="alert-heading m-b-8">Unsupported Input Format</h4>
-        <p>
-            Please note that only sentences with following characteristics are
-            supported by the system currently.
-            <ul className="m-l-10">
-                <li>
-                    - Should contain only sinhala unicode characters and ends
-                    with a fullstop.
-                </li>
-                <li>
-                    - Numbers and other punctuation marks are not supported yet.
-                </li>
-                <li>- No additional white spaces are supported.</li>
-                <li>
-                    - Only Sentence within word limit 3-7 are currently
-                    supported.
-                </li>
-            </ul>
-        </p>
-        <hr />
-        <p className="mb-0">E.g: ක්‍රීඩකයා ඉතා වේගයෙන් දිව්වේය.</p>
-    </div>
-);
+} from '../../components/CommonStyledComponents';
+import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
+import JSONFormatter from '../../components/JSONFormatter';
+import DebugValidationError from '../../components/DebugValidationError';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -142,36 +109,36 @@ class HomePage extends React.Component {
         const { initState } = this.props;
 
         let correctionData = {};
-        let suggestions = null;
+        // let suggestions = null;
 
         if (initState === 'SUCCESS') {
             correctionData = this.props.correctionData;
         }
 
-        suggestions = this.state.randomList.map(item => (
-            <div className="p-t-26" key={item}>
-                <div className="alert alert-danger m-b-0" role="alert">
-                    <h4 className="alert-heading m-b-8">
-                        මා විසින් ඇය ආරක්ෂා{' '}
-                        <span
-                            style={{
-                                backgroundColor: '#e09c9c',
-                                borderRadius: '5px',
-                                height: '8px',
-                                padding: '1px 2px'
-                            }}
-                        >
-                            කෙරෙමි
-                        </span>
-                        .
-                    </h4>
-                    <hr />
-                    <p className="mb-0">
-                        Suggestion {item}: මා විසින් ඇය ආරක්ෂා කෙරෙයි.
-                    </p>
-                </div>
-            </div>
-        ));
+        // suggestions = this.state.randomList.map(item => (
+        //     <div className="p-t-26" key={item}>
+        //         <div className="alert alert-danger m-b-0" role="alert">
+        //             <h4 className="alert-heading m-b-8">
+        //                 මා විසින් ඇය ආරක්ෂා{' '}
+        //                 <span
+        //                     style={{
+        //                         backgroundColor: '#e09c9c',
+        //                         borderRadius: '5px',
+        //                         height: '8px',
+        //                         padding: '1px 2px'
+        //                     }}
+        //                 >
+        //                     කෙරෙමි
+        //                 </span>
+        //                 .
+        //             </h4>
+        //             <hr />
+        //             <p className="mb-0">
+        //                 Suggestion {item}: මා විසින් ඇය ආරක්ෂා කෙරෙයි.
+        //             </p>
+        //         </div>
+        //     </div>
+        // ));
 
         return (
             <div className="container-login100">
@@ -186,7 +153,7 @@ class HomePage extends React.Component {
                             <Title className="p-b-26">
                                 Sinhala Grammar Tool Beta
                             </Title>
-                            {showValidationError && <ValidationError />}
+                            {showValidationError && <DebugValidationError />}
                             <div>
                                 <div>
                                     <Input
@@ -194,50 +161,15 @@ class HomePage extends React.Component {
                                         onChange={this.onInputValueChange}
                                         disabled={requestingCorrections}
                                     />
-                                    <div
-                                        style={{
-                                            textAlign: 'center',
-                                            padding: '20px'
-                                        }}
-                                    >
-                                        <label
-                                            htmlFor="greedyButton"
-                                            className="radio-inline"
-                                        >
-                                            <input
-                                                id="greedyButton"
-                                                value="greedy"
-                                                type="radio"
-                                                name="optradio"
-                                                onChange={this.setSearchType}
-                                                defaultChecked={
-                                                    searchType === 'greedy'
-                                                }
-                                                disabled={requestingCorrections}
-                                            />
-                                            Use Greedy Search
-                                        </label>
-                                        <label
-                                            htmlFor="beemButton"
-                                            className="radio-inline"
-                                            style={{
-                                                paddingLeft: '10px'
-                                            }}
-                                        >
-                                            <input
-                                                id="beemButton"
-                                                value="beem"
-                                                type="radio"
-                                                name="optradio"
-                                                onChange={this.setSearchType}
-                                                defaultChecked={
-                                                    searchType === 'beem'
-                                                }
-                                                disabled={requestingCorrections}
-                                            />
-                                            Use Beam Search
-                                        </label>
-                                    </div>
+                                    <SearchTypeRadioButtons
+                                        beamSearchLabel="Get Multiple Suggestions"
+                                        greedySearchLabel="Get Only The Correction"
+                                        searchType={searchType}
+                                        requestingCorrections={
+                                            requestingCorrections
+                                        }
+                                        setSearchType={this.setSearchType}
+                                    />
                                 </div>
                                 {initState !== 'LOADING' && (
                                     <Button
@@ -262,9 +194,7 @@ class HomePage extends React.Component {
                                         <SubTitle className="p-t-26">
                                             Suggestions
                                         </SubTitle>
-                                        <PrettyPrintJson
-                                            data={correctionData}
-                                        />
+                                        <JSONFormatter data={correctionData} />
                                     </div>
                                 )}
                                 {/* <TransitionGroup
