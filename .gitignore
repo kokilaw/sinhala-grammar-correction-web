@@ -8,6 +8,9 @@
 
 # production
 /build
+/html
+/html.zip
+/html.tar.gz
 
 # misc
 .DS_Store
