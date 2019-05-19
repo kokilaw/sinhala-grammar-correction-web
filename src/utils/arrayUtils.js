@@ -14,3 +14,6 @@ export const arrayContains = (array, value) => {
     }
     return false;
 };
+
+export const arrayDifference = (mainArray, minusArray) =>
+    mainArray.filter(i => minusArray.indexOf(i) < 0);

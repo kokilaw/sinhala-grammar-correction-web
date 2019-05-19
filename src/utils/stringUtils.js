@@ -1,3 +1,5 @@
+import { arrayDifference } from './arrayUtils';
+
 const MINIMUM_SENTENCE_WORD_LENGTH = 3;
 const MAXIMUM_SENTENCE_WORD_LENGTH = 7;
 
@@ -178,3 +180,28 @@ export const getErrorCorrection = (inputSentence, predictedSentence) => {
 
     return results;
 };
+
+// export const getErrorCorrectionTest = (inputSentence, predictedSentence) => {
+//     const splitInputSentence = inputSentence.split(' ');
+//     const splitPredictedSentence = predictedSentence.split(' ');
+
+//     const results = [];
+
+//     if (inputSentence === predictedSentence) {
+//         return results;
+//     }
+
+//     const differentFromInput = arrayDifference(
+//         splitInputSentence,
+//         splitPredictedSentence
+//     );
+//     const differentFromPrediction = arrayDifference(
+//         splitPredictedSentence,
+//         splitInputSentence
+//     );
+
+//     console.log(differentFromInput);
+//     console.log(differentFromPrediction);
+
+//     return results;
+// };

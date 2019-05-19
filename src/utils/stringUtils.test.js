@@ -168,3 +168,22 @@ it('Extracting corrections needed to be replaced with the correction', () => {
         )
     ).toEqual([]);
 });
+
+// it('Extracting corrections needed to be replaced with the correction Test', () => {
+//     expect(
+//         getErrorCorrectionTest(
+//             'අප ඉතා හොඳින් සෙල්ලම් කළෙමි .',
+//             'අපි ඉතා හොඳින් සෙල්ලම් කළෙමු .'
+//         )
+//     ).toEqual([
+//         { errorPhrase: 'අප', replacement: 'අපි' },
+//         { errorPhrase: 'කළෙමි', replacement: 'කළෙමු' }
+//     ]);
+
+//     expect(
+//         getErrorCorrectionTest(
+//             'අද ඉතා ඉක්මනින් මම පාසලට ගියෙමි.',
+//             'අද ඉතා ඉක්මනින් මම පාසලට ගියෙමි.'
+//         )
+//     ).toEqual([]);
+// });
