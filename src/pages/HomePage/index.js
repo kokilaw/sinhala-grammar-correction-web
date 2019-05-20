@@ -9,28 +9,30 @@ import '../../static/css/react-transition.css';
 
 import {
     Title,
-    SubTitle,
-    Input,
     Button,
     LoadingAnimation
 } from '../../components/CommonStyledComponents';
-import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
-import JSONFormatter from '../../components/JSONFormatter';
+
+import ErrorSuggestions from '../../components/ErrorSuggestions';
+// import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
+// import JSONFormatter from '../../components/JSONFormatter';
 import DebugValidationError from '../../components/DebugValidationError';
+
+import { validateInputText } from '../../utils/stringUtils';
 
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.onInputValueChange = this.onInputValueChange.bind(this);
-        this.setSearchType = this.setSearchType.bind(this);
         this.getRequestBody = this.getRequestBody.bind(this);
         this.state = {
-            inputSentence: '',
+            inputText: '',
             searchType: 'greedy',
             requestingCorrections: false,
             showValidationError: false,
             mounted: false,
-            randomList: [1, 2, 3]
+            validationErrorSentences: '',
+            sentencesData: this.props.correctionData.sentences
         };
     }
 
@@ -40,18 +42,18 @@ class HomePage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // You don't have to do this check first, but it can help prevent an unneeded render
-        if (
-            nextProps.requestingCorrections !== this.state.requestingCorrections
-        ) {
+        if (nextProps.correctionData.sentences !== this.state.sentencesData) {
             this.setState({
-                requestingCorrections: nextProps.requestingCorrections
+                sentencesData: nextProps.correctionData.sentences
             });
         }
     }
 
     onInputValueChange = e => {
+        const rawValue = e.target.value;
+        const validValue = rawValue.replace(/\s\./, `.`);
         this.setState({
-            inputSentence: e.target.value
+            inputText: validValue
         });
     };
 
@@ -59,86 +61,73 @@ class HomePage extends React.Component {
         e.preventDefault();
         const { checkGrammar } = this.props;
 
-        if (this.validateInput(this.state.inputSentence)) {
+        const inputValidationErrors = validateInputText(this.state.inputText);
+
+        if (
+            inputValidationErrors !== true &&
+            inputValidationErrors.length !== 0
+        ) {
+            let errors = inputValidationErrors.join('", "');
+            errors = `"${errors}"`;
+            this.setState({
+                showValidationError: true,
+                validationErrorSentences: errors
+            });
+        } else {
             this.setState({ showValidationError: false });
             const requestBody = this.getRequestBody();
             checkGrammar(requestBody);
-        } else {
-            this.setState({ showValidationError: true });
         }
     };
 
-    onAddition = e => {
-        e.preventDefault();
-        const list = this.state.randomList;
-        const lastElement = list[list.length - 1];
-        list.push(lastElement + 1);
-        this.setState({ randomList: list });
-    };
-
     getRequestBody = () => ({
-        sentence: this.state.inputSentence,
+        text: this.state.inputText,
         useBeamSearch: this.state.searchType === 'beem'
     });
 
-    setSearchType = e => {
-        this.setState({
-            searchType: e.target.value
-        });
+    updateStateAfterApplying = sentence => {
+        const remainingSentenceData = this.state.sentencesData.filter(
+            sentenceData => sentenceData.sentence !== sentence
+        );
+        this.setState({ sentencesData: remainingSentenceData });
     };
 
-    validateInput = input => {
-        const validInputPattern = new RegExp('[^\u0D80-\u0DFF.\u200d ]');
-        const validateExtraSpaces = new RegExp('( +[.!?])');
-        const splitSentence = input.match(/\S+/g) || [];
-        return (
-            !validInputPattern.test(input) &&
-            !validateExtraSpaces.test(input) &&
-            splitSentence.length >= 3 &&
-            splitSentence.length <= 7
+    applySuggestion = (error, correction) => {
+        const errorSentence = error.replace(/\s\./, `.`);
+        const correctionSentence = correction.replace(/\s\./, `.`);
+
+        const currentInputText = this.state.inputText;
+        const targetInputText = currentInputText.replace(
+            errorSentence,
+            correctionSentence
         );
+        this.setState({ inputText: targetInputText });
+        this.updateStateAfterApplying(error);
     };
 
     render() {
         const {
-            searchType,
             requestingCorrections,
             showValidationError,
-            mounted
+            mounted,
+            height
         } = this.state;
         const { initState } = this.props;
 
-        let correctionData = {};
-        // let suggestions = null;
+        const currentHeight = height || 0;
+        console.log(currentHeight);
+
+        let containsErrors = false;
 
         if (initState === 'SUCCESS') {
-            correctionData = this.props.correctionData;
+            const sentences = this.state.sentencesData;
+            const boolens = sentences.map(sentence => sentence.isCorrect);
+            boolens.forEach(bool => {
+                if (bool === false) {
+                    containsErrors = true;
+                }
+            });
         }
-
-        // suggestions = this.state.randomList.map(item => (
-        //     <div className="p-t-26" key={item}>
-        //         <div className="alert alert-danger m-b-0" role="alert">
-        //             <h4 className="alert-heading m-b-8">
-        //                 මා විසින් ඇය ආරක්ෂා{' '}
-        //                 <span
-        //                     style={{
-        //                         backgroundColor: '#e09c9c',
-        //                         borderRadius: '5px',
-        //                         height: '8px',
-        //                         padding: '1px 2px'
-        //                     }}
-        //                 >
-        //                     කෙරෙමි
-        //                 </span>
-        //                 .
-        //             </h4>
-        //             <hr />
-        //             <p className="mb-0">
-        //                 Suggestion {item}: මා විසින් ඇය ආරක්ෂා කෙරෙයි.
-        //             </p>
-        //         </div>
-        //     </div>
-        // ));
 
         return (
             <div className="container-login100">
@@ -153,57 +142,62 @@ class HomePage extends React.Component {
                             <Title className="p-b-26">
                                 Sinhala Grammar Tool Beta
                             </Title>
-                            {showValidationError && <DebugValidationError />}
-                            <div>
-                                <div>
-                                    <Input
-                                        placeholder="Enter the sentence here..."
-                                        onChange={this.onInputValueChange}
-                                        disabled={requestingCorrections}
-                                    />
-                                    <SearchTypeRadioButtons
-                                        beamSearchLabel="Get Multiple Suggestions"
-                                        greedySearchLabel="Get Only The Correction"
-                                        searchType={searchType}
-                                        requestingCorrections={
-                                            requestingCorrections
-                                        }
-                                        setSearchType={this.setSearchType}
-                                    />
-                                </div>
-                                {initState !== 'LOADING' && (
-                                    <Button
-                                        onClick={this.onSubmit}
-                                        disabled={requestingCorrections}
-                                    >
-                                        Check Grammar
-                                    </Button>
-                                )}
-                                {initState === 'LOADING' && (
-                                    <div
-                                        style={{
-                                            textAlign: 'center',
-                                            paddingTop: '20px'
-                                        }}
-                                    >
-                                        <LoadingAnimation />
-                                    </div>
-                                )}
-                                {initState === 'SUCCESS' && (
+                            {showValidationError && (
+                                <DebugValidationError
+                                    erroneousSentences={
+                                        this.state.validationErrorSentences
+                                    }
+                                />
+                            )}
+                            <div className="height-change-div">
+                                <div id="innerDiv">
                                     <div>
-                                        <SubTitle className="p-t-26">
-                                            Suggestions
-                                        </SubTitle>
-                                        <JSONFormatter data={correctionData} />
+                                        <textarea
+                                            className="input-area"
+                                            placeholder="Enter the sentences here..."
+                                            onChange={this.onInputValueChange}
+                                            disabled={requestingCorrections}
+                                            value={this.state.inputText}
+                                        />
                                     </div>
-                                )}
-                                {/* <TransitionGroup
-                                    transitionName="list-anim"
-                                    transitionEnterTimeout={500}
-                                    transitionLeaveTimeout={300}
-                                >
-                                    {suggestions}
-                                </TransitionGroup> */}
+                                    {initState !== 'LOADING' && (
+                                        <Button
+                                            onClick={this.onSubmit}
+                                            disabled={requestingCorrections}
+                                        >
+                                            Check Grammar
+                                        </Button>
+                                    )}
+                                    {initState === 'LOADING' && (
+                                        <div
+                                            style={{
+                                                textAlign: 'center',
+                                                paddingTop: '40px'
+                                            }}
+                                        >
+                                            <LoadingAnimation />
+                                        </div>
+                                    )}
+                                    {initState === 'SUCCESS' &&
+                                        containsErrors && (
+                                        <ErrorSuggestions
+                                            sentencesData={
+                                                this.state.sentencesData
+                                            }
+                                            applySuggestion={
+                                                this.applySuggestion
+                                            }
+                                        />
+                                    )}
+                                    {initState === 'SUCCESS' &&
+                                        !containsErrors && (
+                                        <div className="p-t-30 text-center">
+                                            {' '}
+                                                Your grammar seems accurate and
+                                                correct...
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </form>
                     </CSSTransition>
@@ -217,15 +211,15 @@ HomePage.propTypes = {
     checkGrammar: PropTypes.func.isRequired,
     initState: PropTypes.string.isRequired,
     correctionData: PropTypes.shape({
-        results: PropTypes.array.isRequired,
-        useBeamSearch: PropTypes.bool.isRequired
-    }).isRequired,
+        sentences: PropTypes.array,
+        useBeamSearch: PropTypes.bool
+    }),
     requestingCorrections: PropTypes.bool.isRequired
 };
 
 HomePage.defaultProps = {
     correctionData: {
-        results: [],
+        sentences: [],
         useBeamSearch: false
     }
 };

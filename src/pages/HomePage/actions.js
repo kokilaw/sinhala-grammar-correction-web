@@ -5,7 +5,8 @@ import {
 } from '../../types';
 import { post } from '../../api';
 
-const REQUEST_URL = '/correct';
+// const REQUEST_URL = '/correct';
+const REQUEST_URL = '/correct/paragraph';
 
 export function fetchCorrectionsInit() {
     return {

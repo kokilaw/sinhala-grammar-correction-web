@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DebugValidationError = () => (
+const DebugValidationError = ({ erroneousSentences }) => (
     <div className="alert alert-danger m-b-26" role="alert">
         <h4 className="alert-heading m-b-8">Unsupported Input Format</h4>
         <p>
@@ -22,7 +22,7 @@ const DebugValidationError = () => (
         </ul>
 
         <hr />
-        <p className="mb-0">E.g: ක්‍රීඩකයා ඉතා වේගයෙන් දිව්වේය.</p>
+        <p className="mb-0">Invalid sentences found: {erroneousSentences}</p>
     </div>
 );
 

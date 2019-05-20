@@ -1,5 +1,3 @@
-import { arrayDifference } from './arrayUtils';
-
 const MINIMUM_SENTENCE_WORD_LENGTH = 3;
 const MAXIMUM_SENTENCE_WORD_LENGTH = 7;
 
