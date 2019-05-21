@@ -60,8 +60,8 @@ class HomePage extends React.Component {
     onSubmit = e => {
         e.preventDefault();
         const { checkGrammar } = this.props;
-
-        const inputValidationErrors = validateInputText(this.state.inputText);
+        const inputText = this.state.inputText.trim();
+        const inputValidationErrors = validateInputText(inputText);
 
         if (
             inputValidationErrors !== true &&
@@ -80,10 +80,13 @@ class HomePage extends React.Component {
         }
     };
 
-    getRequestBody = () => ({
-        text: this.state.inputText,
-        useBeamSearch: this.state.searchType === 'beem'
-    });
+    getRequestBody = () => {
+        const inputText = this.state.inputText.trim();
+        return {
+            text: inputText,
+            useBeamSearch: this.state.searchType === 'beem'
+        };
+    };
 
     updateStateAfterApplying = sentence => {
         const remainingSentenceData = this.state.sentencesData.filter(
