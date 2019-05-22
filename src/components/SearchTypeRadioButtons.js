@@ -6,12 +6,16 @@ const SearchTypeRadioButtons = ({
     requestingCorrections,
     setSearchType,
     greedySearchLabel,
-    beamSearchLabel
+    beamSearchLabel,
+    beemNgramSearchLabel
 }) => (
     <div
         style={{
             textAlign: 'center',
-            padding: '20px'
+            paddingTop: '20px',
+            paddingRight: '20px',
+            paddingBottom: '0px',
+            paddingLeft: '20px'
         }}
     >
         <label htmlFor="greedyButton" className="radio-inline">
@@ -44,6 +48,24 @@ const SearchTypeRadioButtons = ({
             />{' '}
             {beamSearchLabel}
         </label>
+        <label
+            htmlFor="beemNgramButton"
+            className="radio-inline"
+            style={{
+                paddingLeft: '10px'
+            }}
+        >
+            <input
+                id="beemNgramButton"
+                value="beemNgram"
+                type="radio"
+                name="optradio"
+                onChange={setSearchType}
+                defaultChecked={searchType === 'beemNgram'}
+                disabled={requestingCorrections}
+            />{' '}
+            {beemNgramSearchLabel}
+        </label>
     </div>
 );
 
@@ -52,7 +74,8 @@ SearchTypeRadioButtons.propTypes = {
     requestingCorrections: PropTypes.bool.isRequired,
     setSearchType: PropTypes.func.isRequired,
     beamSearchLabel: PropTypes.string.isRequired,
-    greedySearchLabel: PropTypes.string.isRequired
+    greedySearchLabel: PropTypes.string.isRequired,
+    beemNgramSearchLabel: PropTypes.string.isRequired
 };
 
 SearchTypeRadioButtons.defaultProps = {

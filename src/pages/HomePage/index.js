@@ -47,6 +47,13 @@ class HomePage extends React.Component {
                 sentencesData: nextProps.correctionData.sentences
             });
         }
+        if (
+            nextProps.requestingCorrections !== this.state.requestingCorrections
+        ) {
+            this.setState({
+                requestingCorrections: nextProps.requestingCorrections
+            });
+        }
     }
 
     onInputValueChange = e => {
@@ -84,7 +91,8 @@ class HomePage extends React.Component {
         const inputText = this.state.inputText.trim();
         return {
             text: inputText,
-            useBeamSearch: this.state.searchType === 'beem'
+            useBeamSearch: true,
+            useNgramScore: true
         };
     };
 
@@ -196,8 +204,7 @@ class HomePage extends React.Component {
                                         !containsErrors && (
                                         <div className="p-t-30 text-center">
                                             {' '}
-                                                Your grammar seems accurate and
-                                                correct...
+                                                No grammartical errors found.
                                         </div>
                                     )}
                                 </div>

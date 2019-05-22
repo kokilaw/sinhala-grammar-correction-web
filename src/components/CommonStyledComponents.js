@@ -61,7 +61,10 @@ export const Input = styled.input`
 export const Button = styled.button`
     display: block;
     width: 200px;
-    margin: 30px auto 0;
+    margin-top: 26px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
     padding: 10px;
     border: none;
     border-radius: 25px;

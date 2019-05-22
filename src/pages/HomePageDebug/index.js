@@ -68,17 +68,12 @@ class HomePageDebug extends React.Component {
         }
     };
 
-    onAddition = e => {
-        e.preventDefault();
-        const list = this.state.randomList;
-        const lastElement = list[list.length - 1];
-        list.push(lastElement + 1);
-        this.setState({ randomList: list });
-    };
-
     getRequestBody = () => ({
         sentence: this.state.inputSentence,
-        useBeamSearch: this.state.searchType === 'beem'
+        useBeamSearch:
+            this.state.searchType === 'beem' ||
+            this.state.searchType === 'beemNgram',
+        useNgramScore: this.state.searchType === 'beemNgram'
     });
 
     setSearchType = e => {
@@ -136,8 +131,9 @@ class HomePageDebug extends React.Component {
                                         disabled={requestingCorrections}
                                     />
                                     <SearchTypeRadioButtons
-                                        beamSearchLabel="Use Beam Search"
-                                        greedySearchLabel="Use Greedy Search"
+                                        beamSearchLabel="Beam"
+                                        greedySearchLabel="Greedy"
+                                        beemNgramSearchLabel="Beam + Ngram"
                                         searchType={searchType}
                                         requestingCorrections={
                                             requestingCorrections
