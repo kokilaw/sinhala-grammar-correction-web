@@ -1,3 +1,5 @@
+import swal from 'sweetalert';
+
 import {
     FETCH_CORRECTIONS_FOR_SENTENCES_INIT,
     FETCH_CORRECTIONS_FOR_SENTENCES_SUCCESS,
@@ -11,6 +13,12 @@ export default function correctionsReducer(state = {}, action = {}) {
     case FETCH_CORRECTIONS_FOR_SENTENCES_SUCCESS:
         return { ...state, data: action.data, status: 'SUCCESS' };
     case FETCH_CORRECTIONS_FOR_SENTENCES_ERROR:
+        swal({
+            title: 'Error connecting to the server!',
+            text: 'Please try again later.',
+            icon: 'error',
+            button: true
+        });
         return { ...state, error: action.error, status: 'ERROR' };
     default:
         return state;

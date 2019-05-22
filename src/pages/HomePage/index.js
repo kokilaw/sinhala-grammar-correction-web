@@ -216,7 +216,8 @@ class HomePage extends React.Component {
                                 <div id="innerDiv">
                                     <div>
                                         <textarea
-                                            className="input-area"
+                                            className={`form-control ${showValidationError &&
+                                                'error-border'}`}
                                             placeholder="Enter the sentences here..."
                                             onChange={this.onInputValueChange}
                                             disabled={requestingCorrections}
