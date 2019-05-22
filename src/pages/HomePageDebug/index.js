@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import ReactJson from 'react-json-view';
 
 import {
     Title,
@@ -11,7 +12,6 @@ import {
     LoadingAnimation
 } from '../../components/CommonStyledComponents';
 import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
-import JSONFormatter from '../../components/JSONFormatter';
 import DebugValidationError from '../../components/DebugValidationError';
 
 import '../../static/css/react-transition.css';
@@ -164,7 +164,21 @@ class HomePageDebug extends React.Component {
                                         <SubTitle className="p-t-26">
                                             Suggestions
                                         </SubTitle>
-                                        <JSONFormatter data={correctionData} />
+                                        {/* <JSONFormatter data={correctionData} /> */}
+                                        <div
+                                            className="m-t-26"
+                                            style={{
+                                                padding: '26px',
+                                                borderRadius: '5px',
+                                                backgroundColor: '#d4edda'
+                                            }}
+                                        >
+                                            <ReactJson
+                                                src={correctionData}
+                                                displayDataTypes={false}
+                                                enableClipboard={false}
+                                            />
+                                        </div>
                                     </div>
                                 )}
                             </div>

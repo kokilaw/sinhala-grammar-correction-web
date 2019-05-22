@@ -69,7 +69,7 @@ export const Button = styled.button`
     border: none;
     border-radius: 25px;
     color: #fff;
-    background-color: #58b846;
+    background-color: ${props => props.backgroundColor || '#58b846'};
     font: 15px Poppins-Medium;
     line-height: 1.2;
     text-transform: uppercase;
@@ -78,7 +78,8 @@ export const Button = styled.button`
     cursor: pointer;
     transition: all 0.4s;
     &:hover {
-        box-shadow: 0 0.5em 0.5em -0.4em #8fc866;
+        box-shadow: 0 0.5em 0.5em -0.4em ${props =>
+        props.shadowColor || '#8fc866'};
         transform: translateY(-0.25em);
     }
     &:focus {

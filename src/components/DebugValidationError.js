@@ -2,7 +2,6 @@ import React from 'react';
 
 const DebugValidationError = ({ erroneousSentences }) => (
     <div className="alert alert-danger m-b-26" role="alert">
-        <h4 className="alert-heading m-b-8">Unsupported Input Format</h4>
         <p>
             Please note that only sentences with following characteristics are
             supported by the system currently.

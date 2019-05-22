@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import swal from 'sweetalert';
 
 import { loadCorrectionsForSentence } from './actions';
 
@@ -80,11 +81,23 @@ class HomePage extends React.Component {
                 showValidationError: true,
                 validationErrorSentences: errors
             });
+            swal({
+                title: 'Invalid Input!',
+                text: 'Invalid input supplied. Please check again.',
+                icon: 'warning',
+                button: true
+            });
         } else {
             this.setState({ showValidationError: false });
             const requestBody = this.getRequestBody();
             checkGrammar(requestBody);
         }
+    };
+
+    onCopyToClipboard = e => {
+        e.preventDefault();
+        const textInTextArea = this.state.inputText.trim();
+        this.copyTextToClipboard(textInTextArea);
     };
 
     getRequestBody = () => {
@@ -114,6 +127,45 @@ class HomePage extends React.Component {
         );
         this.setState({ inputText: targetInputText });
         this.updateStateAfterApplying(error);
+    };
+
+    fallbackCopyTextToClipboard = text => {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            const msg = successful ? 'successful' : 'unsuccessful';
+            console.log(`Fallback: Copying text command was ${msg}`);
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+        }
+
+        document.body.removeChild(textArea);
+    };
+    copyTextToClipboard = text => {
+        if (!navigator.clipboard) {
+            this.fallbackCopyTextToClipboard(text);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(
+            () => {
+                console.log('Async: Copying to clipboard was successful!');
+                swal({
+                    title: 'Successfully Coppied!',
+                    text: 'Text coppied to the clipboard.',
+                    icon: 'success',
+                    timer: 2000,
+                    button: false
+                });
+            },
+            err => {
+                console.error('Async: Could not copy text: ', err);
+            }
+        );
     };
 
     render() {
@@ -172,12 +224,32 @@ class HomePage extends React.Component {
                                         />
                                     </div>
                                     {initState !== 'LOADING' && (
-                                        <Button
-                                            onClick={this.onSubmit}
-                                            disabled={requestingCorrections}
-                                        >
-                                            Check Grammar
-                                        </Button>
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col-sm">
+                                                    <Button
+                                                        onClick={this.onSubmit}
+                                                        disabled={
+                                                            requestingCorrections
+                                                        }
+                                                    >
+                                                        Check Grammar
+                                                    </Button>
+                                                </div>
+                                                <div className="col-sm">
+                                                    <Button
+                                                        onClick={
+                                                            this
+                                                                .onCopyToClipboard
+                                                        }
+                                                        backgroundColor="#c6c8ca"
+                                                        shadowColor="#d6d8d9"
+                                                    >
+                                                        Copy Text
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )}
                                     {initState === 'LOADING' && (
                                         <div
