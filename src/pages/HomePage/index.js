@@ -15,8 +15,6 @@ import {
 } from '../../components/CommonStyledComponents';
 
 import ErrorSuggestions from '../../components/ErrorSuggestions';
-// import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
-// import JSONFormatter from '../../components/JSONFormatter';
 import DebugValidationError from '../../components/DebugValidationError';
 
 import { validateInputText } from '../../utils/stringUtils';
@@ -38,6 +36,7 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Sinhala Grammar Tool';
         this.setState({ mounted: true });
     }
 
@@ -256,7 +255,7 @@ class HomePage extends React.Component {
                                         <div
                                             style={{
                                                 textAlign: 'center',
-                                                paddingTop: '40px'
+                                                paddingTop: '26px'
                                             }}
                                         >
                                             <LoadingAnimation />

@@ -26,7 +26,7 @@ class HomePageDebug extends React.Component {
         this.getRequestBody = this.getRequestBody.bind(this);
         this.state = {
             inputSentence: '',
-            searchType: 'greedy',
+            searchType: 'beemNgram',
             requestingCorrections: false,
             showValidationError: false,
             mounted: false,
@@ -35,6 +35,7 @@ class HomePageDebug extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Sinhala Grammar Tool - Debug';
         this.setState({ mounted: true });
     }
 
