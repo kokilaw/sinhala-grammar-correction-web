@@ -9,7 +9,7 @@ const getErrorDisplayData = (response, request) => {
     } else if (request) {
         return {
             title: 'Connection Problem!',
-            text: 'Please check your connection.'
+            text: 'Please check your connection or try again later.'
         };
     }
     return {

@@ -20,6 +20,10 @@ const showValidationErrorAlert = (type, sentences) => {
         errorMessage =
                 'Please mark the end of sentence with valid punctuations.';
         break;
+    case 'MORE_THAN_ONE_SENTENCE':
+        errorTitle = 'Invalid Input!';
+        errorMessage = 'Only one sentence is allowed in debug mode.';
+        break;
     case 'INVALID_CHARACTERS':
         errors = sentences.join('", \n"');
         errors = `"${errors}"`;
@@ -47,13 +51,14 @@ const showValidationErrorAlert = (type, sentences) => {
     });
 };
 
-const validateInputText = inputText => {
+const validateInputText = (inputText, allowMultipleSentences = true) => {
     if (typeof inputText !== 'string') {
         throw Error('Unsupported arguement. String expected.');
     }
 
     const validInputPattern = new RegExp('[^\u0D80-\u0DFF.\u200d ]');
-    const endPattern = /([.!?])/i;
+    // const endPattern = /[.!?]$/i;
+    const endPattern = /[.]$/i;
 
     const matched = endPattern.exec(inputText);
     const invalidSenteces = [];
@@ -68,6 +73,11 @@ const validateInputText = inputText => {
     }
 
     const sentenceArray = getSentencesFromText(inputText);
+
+    if (!allowMultipleSentences && sentenceArray.length > 1) {
+        showValidationErrorAlert('MORE_THAN_ONE_SENTENCE', null);
+        return false;
+    }
 
     /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
     for (let i = 0; i < sentenceArray.length; i++) {

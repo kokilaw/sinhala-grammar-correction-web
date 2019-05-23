@@ -60,7 +60,7 @@ class HomePageDebug extends React.Component {
         e.preventDefault();
         const { checkGrammar } = this.props;
 
-        if (validateInputText(this.state.inputSentence)) {
+        if (validateInputText(this.state.inputSentence, false)) {
             this.setState({ inputContainsErrors: false });
             const requestBody = this.getRequestBody();
             checkGrammar(requestBody);
