@@ -1,6 +1,6 @@
 import swal from 'sweetalert';
 
-const getErrorDisplayData = (request, response) => {
+const getErrorDisplayData = (response, request) => {
     if (response) {
         return {
             title: 'Server Problem!',
@@ -20,8 +20,8 @@ const getErrorDisplayData = (request, response) => {
 
 const handleErrorAlerts = errorData => {
     const errorDisplayData = getErrorDisplayData(
-        errorData.request,
-        errorData.response
+        errorData.response,
+        errorData.request
     );
     swal({
         title: errorDisplayData.title,

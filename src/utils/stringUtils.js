@@ -1,8 +1,3 @@
-const MINIMUM_SENTENCE_WORD_LENGTH = 3;
-const MAXIMUM_SENTENCE_WORD_LENGTH = 7;
-
-const pattern = /([.!?])/i;
-
 const sinhalaShortForms = {
     'ඒ.': 'aa',
     'බී.': 'bb',
@@ -44,22 +39,6 @@ const sinhalaShortForms = {
     '7.': '7dot',
     '8.': '8dot',
     '9.': 'dot'
-};
-
-export const validateInputSentence = input => {
-    if (typeof input !== 'string') {
-        throw Error('Unsupported arguement. String expected.');
-    }
-
-    const validInputPattern = new RegExp('[^\u0D80-\u0DFF.\u200d ]');
-    const validateExtraSpaces = new RegExp('( +[.!?])');
-    const splitSentence = input.match(/\S+/g) || [];
-    return (
-        !validInputPattern.test(input) &&
-        !validateExtraSpaces.test(input) &&
-        splitSentence.length >= MINIMUM_SENTENCE_WORD_LENGTH &&
-        splitSentence.length <= MAXIMUM_SENTENCE_WORD_LENGTH
-    );
 };
 
 function getKeyByValue(object, value) {
@@ -111,33 +90,6 @@ export const removeSpaceBeforePunctuation = prediction => {
     text = text.replace(/\s\?/g, `?`);
 
     return text;
-};
-
-export const validateInputText = inputText => {
-    if (typeof inputText !== 'string') {
-        throw Error('Unsupported arguement. String expected.');
-    }
-    const matched = pattern.exec(inputText);
-
-    if (matched == null || matched.length === 0) {
-        return [inputText];
-    }
-
-    const sentenceArray = getSentencesFromText(inputText);
-    const invalidSenteces = [];
-
-    /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
-    for (let i = 0; i < sentenceArray.length; i++) {
-        if (!validateInputSentence(sentenceArray[i])) {
-            invalidSenteces.push(sentenceArray[i]);
-        }
-    }
-
-    if (invalidSenteces.length === 0) {
-        return true;
-    }
-
-    return invalidSenteces;
 };
 
 export const getErrorCorrection = (inputSentence, predictedSentence) => {

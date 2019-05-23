@@ -1,4 +1,4 @@
-import { handleErrorAlerts } from '../handlers/ErrorAlertHandler';
+import { handleErrorAlerts } from '../handlers/connectionErrorAlertHandler';
 
 import {
     FETCH_CORRECTIONS_FOR_SENTENCES_INIT,

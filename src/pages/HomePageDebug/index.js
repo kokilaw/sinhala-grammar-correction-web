@@ -7,16 +7,16 @@ import ReactJson from 'react-json-view';
 import {
     Title,
     SubTitle,
-    Input,
     Button,
     LoadingAnimation
 } from '../../components/CommonStyledComponents';
 import SearchTypeRadioButtons from '../../components/SearchTypeRadioButtons';
-import DebugValidationError from '../../components/DebugValidationError';
+import ValidSentencesComponent from '../../components/ValidSentencesComponent';
 
 import '../../static/css/react-transition.css';
 
 import { loadCorrectionsForSentence } from './actions';
+import { validateInputText } from '../../handlers/inputValidationHandler';
 
 class HomePageDebug extends React.Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class HomePageDebug extends React.Component {
             inputSentence: '',
             searchType: 'beemNgram',
             requestingCorrections: false,
-            showValidationError: false,
+            inputContainsErrors: false,
             mounted: false,
             randomList: [1, 2, 3]
         };
@@ -60,12 +60,12 @@ class HomePageDebug extends React.Component {
         e.preventDefault();
         const { checkGrammar } = this.props;
 
-        if (this.validateInput(this.state.inputSentence)) {
-            this.setState({ showValidationError: false });
+        if (validateInputText(this.state.inputSentence)) {
+            this.setState({ inputContainsErrors: false });
             const requestBody = this.getRequestBody();
             checkGrammar(requestBody);
         } else {
-            this.setState({ showValidationError: true });
+            this.setState({ inputContainsErrors: true });
         }
     };
 
@@ -83,31 +83,24 @@ class HomePageDebug extends React.Component {
         });
     };
 
-    validateInput = input => {
-        const validInputPattern = new RegExp('[^\u0D80-\u0DFF.\u200d ]');
-        const validateExtraSpaces = new RegExp('( +[.!?])');
-        const splitSentence = input.match(/\S+/g) || [];
-        return (
-            !validInputPattern.test(input) &&
-            !validateExtraSpaces.test(input) &&
-            splitSentence.length >= 3 &&
-            splitSentence.length <= 7
-        );
-    };
-
     render() {
         const {
             searchType,
             requestingCorrections,
-            showValidationError,
+            inputContainsErrors,
             mounted
         } = this.state;
         const { initState } = this.props;
 
         let correctionData = {};
+        let containsErrors = false;
+        let grammarChecked = false;
 
         if (initState === 'SUCCESS') {
             correctionData = this.props.correctionData;
+            console.log(correctionData);
+            containsErrors = !correctionData.isCorrect;
+            grammarChecked = true;
         }
 
         return (
@@ -123,10 +116,15 @@ class HomePageDebug extends React.Component {
                             <Title className="p-b-26">
                                 Sinhala Grammar Tool Beta
                             </Title>
-                            {showValidationError && <DebugValidationError />}
+                            <ValidSentencesComponent />
                             <div>
                                 <div>
-                                    <Input
+                                    <input
+                                        className={`form-control ${inputContainsErrors &&
+                                            'has-warning'} ${grammarChecked &&
+                                            (containsErrors
+                                                ? 'has-error'
+                                                : 'has-success')} center-text`}
                                         placeholder="Enter the sentence here..."
                                         onChange={this.onInputValueChange}
                                         disabled={requestingCorrections}
@@ -145,6 +143,12 @@ class HomePageDebug extends React.Component {
                                 {initState !== 'LOADING' && (
                                     <Button
                                         onClick={this.onSubmit}
+                                        style={{
+                                            marginTop: '26px',
+                                            marginRight: 'auto',
+                                            marginBottom: '0px',
+                                            marginLeft: 'auto'
+                                        }}
                                         disabled={requestingCorrections}
                                     >
                                         Check Grammar

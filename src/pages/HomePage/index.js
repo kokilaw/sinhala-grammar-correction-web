@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import swal from 'sweetalert';
 
 import { loadCorrectionsForSentence } from './actions';
 
@@ -13,11 +12,11 @@ import {
     Button,
     LoadingAnimation
 } from '../../components/CommonStyledComponents';
-
+import { copyTextToClipboard } from '../../handlers/textCopyHandler';
 import ErrorSuggestions from '../../components/ErrorSuggestions';
-import DebugValidationError from '../../components/DebugValidationError';
+import ValidSentencesComponent from '../../components/ValidSentencesComponent';
 
-import { validateInputText } from '../../utils/stringUtils';
+import { validateInputText } from '../../handlers/inputValidationHandler';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -26,11 +25,10 @@ class HomePage extends React.Component {
         this.getRequestBody = this.getRequestBody.bind(this);
         this.state = {
             inputText: '',
-            searchType: 'greedy',
             requestingCorrections: false,
-            showValidationError: false,
             mounted: false,
-            validationErrorSentences: '',
+            inputContainsErrors: false,
+            noErrorsMessage: 'No grammartical errors found.',
             sentencesData: this.props.correctionData.sentences
         };
     }
@@ -66,37 +64,29 @@ class HomePage extends React.Component {
 
     onSubmit = e => {
         e.preventDefault();
+
+        this.setState({
+            noErrorsMessage: 'No grammartical errors found.',
+            inputContainsErrors: false
+        });
+
         const { checkGrammar } = this.props;
         const inputText = this.state.inputText.trim();
-        const inputValidationErrors = validateInputText(inputText);
 
-        if (
-            inputValidationErrors !== true &&
-            inputValidationErrors.length !== 0
-        ) {
-            let errors = inputValidationErrors.join('", "');
-            errors = `"${errors}"`;
-            this.setState({
-                showValidationError: true,
-                validationErrorSentences: errors
-            });
-            swal({
-                title: 'Invalid Input!',
-                text: 'Invalid input supplied. Please check again.',
-                icon: 'warning',
-                button: true
-            });
-        } else {
-            this.setState({ showValidationError: false });
+        if (validateInputText(inputText)) {
             const requestBody = this.getRequestBody();
             checkGrammar(requestBody);
+        } else {
+            this.setState({
+                inputContainsErrors: true
+            });
         }
     };
 
     onCopyToClipboard = e => {
         e.preventDefault();
         const textInTextArea = this.state.inputText.trim();
-        this.copyTextToClipboard(textInTextArea);
+        copyTextToClipboard(textInTextArea);
     };
 
     getRequestBody = () => {
@@ -124,60 +114,27 @@ class HomePage extends React.Component {
             errorSentence,
             correctionSentence
         );
-        this.setState({ inputText: targetInputText });
+        this.setState({
+            inputText: targetInputText,
+            noErrorsMessage: 'No more grammartical errors found.'
+        });
         this.updateStateAfterApplying(error);
-    };
-
-    fallbackCopyTextToClipboard = text => {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            const successful = document.execCommand('copy');
-            const msg = successful ? 'successful' : 'unsuccessful';
-            console.log(`Fallback: Copying text command was ${msg}`);
-        } catch (err) {
-            console.error('Fallback: Oops, unable to copy', err);
-        }
-
-        document.body.removeChild(textArea);
-    };
-    copyTextToClipboard = text => {
-        if (!navigator.clipboard) {
-            this.fallbackCopyTextToClipboard(text);
-            return;
-        }
-        navigator.clipboard.writeText(text).then(
-            () => {
-                console.log('Async: Copying to clipboard was successful!');
-                swal({
-                    title: 'Successfully Coppied!',
-                    text: 'Text coppied to the clipboard.',
-                    icon: 'success',
-                    timer: 2000,
-                    button: false
-                });
-            },
-            err => {
-                console.error('Async: Could not copy text: ', err);
-            }
-        );
     };
 
     render() {
         const {
             requestingCorrections,
-            showValidationError,
-            mounted
+            mounted,
+            inputContainsErrors,
+            noErrorsMessage
         } = this.state;
         const { initState } = this.props;
 
         let containsErrors = false;
+        let grammarChecked = false;
 
         if (initState === 'SUCCESS') {
+            grammarChecked = true;
             const sentences = this.state.sentencesData;
             const boolens = sentences.map(sentence => sentence.isCorrect);
             boolens.forEach(bool => {
@@ -200,19 +157,16 @@ class HomePage extends React.Component {
                             <Title className="p-b-26">
                                 Sinhala Grammar Tool Beta
                             </Title>
-                            {showValidationError && (
-                                <DebugValidationError
-                                    erroneousSentences={
-                                        this.state.validationErrorSentences
-                                    }
-                                />
-                            )}
+                            <ValidSentencesComponent />
                             <div className="height-change-div">
                                 <div id="innerDiv">
                                     <div>
                                         <textarea
-                                            className={`form-control ${showValidationError &&
-                                                'error-border'}`}
+                                            className={`form-control ${inputContainsErrors &&
+                                                'has-warning'} ${grammarChecked &&
+                                                (containsErrors
+                                                    ? 'has-error'
+                                                    : 'has-success')} center-text`}
                                             placeholder="Enter the sentences here..."
                                             onChange={this.onInputValueChange}
                                             disabled={requestingCorrections}
@@ -228,6 +182,11 @@ class HomePage extends React.Component {
                                                         disabled={
                                                             requestingCorrections
                                                         }
+                                                        style={{
+                                                            marginTop: '26px',
+                                                            marginBottom: '0px',
+                                                            marginLeft: 'auto'
+                                                        }}
                                                     >
                                                         Check Grammar
                                                     </Button>
@@ -240,6 +199,11 @@ class HomePage extends React.Component {
                                                         }
                                                         backgroundColor="#c6c8ca"
                                                         shadowColor="#d6d8d9"
+                                                        style={{
+                                                            marginTop: '26px',
+                                                            marginRight: 'auto',
+                                                            marginBottom: '0px'
+                                                        }}
                                                     >
                                                         Copy Text
                                                     </Button>
@@ -270,9 +234,13 @@ class HomePage extends React.Component {
                                     )}
                                     {initState === 'SUCCESS' &&
                                         !containsErrors && (
-                                        <div className="p-t-30 text-center">
-                                            {' '}
-                                                No grammartical errors found.
+                                        <div className="p-t-30">
+                                            <div
+                                                className="alert alert-success text-center"
+                                                role="alert"
+                                            >
+                                                {noErrorsMessage}
+                                            </div>
                                         </div>
                                     )}
                                 </div>
