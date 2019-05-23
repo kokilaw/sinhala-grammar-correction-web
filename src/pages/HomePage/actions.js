@@ -37,7 +37,7 @@ export function loadCorrectionsForSentence(request) {
                 dispatch(fetchCorrectionsSuccess(response.data));
             })
             .catch(error => {
-                dispatch(fetchCorrectionsError(error.response));
+                dispatch(fetchCorrectionsError(error));
             });
     };
 }

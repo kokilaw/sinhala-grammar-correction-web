@@ -171,13 +171,9 @@ class HomePage extends React.Component {
         const {
             requestingCorrections,
             showValidationError,
-            mounted,
-            height
+            mounted
         } = this.state;
         const { initState } = this.props;
-
-        const currentHeight = height || 0;
-        console.log(currentHeight);
 
         let containsErrors = false;
 
