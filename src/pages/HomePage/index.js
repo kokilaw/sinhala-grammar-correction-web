@@ -274,6 +274,9 @@ class HomePage extends React.Component {
                                                     <div
                                                         className="alert alert-success text-center"
                                                         role="alert"
+                                                        style={{
+                                                            marginBottom: `${0}rem`
+                                                        }}
                                                     >
                                                         {noErrorsMessage}
                                                     </div>
