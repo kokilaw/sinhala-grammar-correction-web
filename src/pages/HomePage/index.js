@@ -70,17 +70,20 @@ class HomePage extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        this.setState({
-            noErrorsMessage: 'No grammartical errors found.',
-            inputContainsErrors: false
-        });
-
         const { checkGrammar } = this.props;
         const inputText = this.state.inputText.trim();
 
         if (validateInputText(inputText)) {
             const requestBody = this.getRequestBody();
-            checkGrammar(requestBody);
+            this.setState(
+                {
+                    noErrorsMessage: 'No grammartical errors found.',
+                    inputContainsErrors: false
+                },
+                () => {
+                    checkGrammar(requestBody);
+                }
+            );
         } else {
             this.setState({
                 inputContainsErrors: true

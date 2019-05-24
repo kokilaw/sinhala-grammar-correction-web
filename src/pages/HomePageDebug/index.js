@@ -64,8 +64,9 @@ class HomePageDebug extends React.Component {
     onSubmit = e => {
         e.preventDefault();
         const { checkGrammar } = this.props;
+        const inputSentence = this.state.inputSentence.trim();
 
-        if (validateInputText(this.state.inputSentence, false)) {
+        if (validateInputText(inputSentence, false)) {
             this.setState({ inputContainsErrors: false });
             const requestBody = this.getRequestBody();
             checkGrammar(requestBody);
@@ -74,13 +75,16 @@ class HomePageDebug extends React.Component {
         }
     };
 
-    getRequestBody = () => ({
-        sentence: this.state.inputSentence,
-        useBeamSearch:
-            this.state.searchType === 'beem' ||
-            this.state.searchType === 'beemNgram',
-        useNgramScore: this.state.searchType === 'beemNgram'
-    });
+    getRequestBody = () => {
+        const inputSentence = this.state.inputSentence.trim();
+        return {
+            sentence: inputSentence,
+            useBeamSearch:
+                this.state.searchType === 'beem' ||
+                this.state.searchType === 'beemNgram',
+            useNgramScore: this.state.searchType === 'beemNgram'
+        };
+    };
 
     setSearchType = e => {
         const inputValue = e.target.value.trim();
