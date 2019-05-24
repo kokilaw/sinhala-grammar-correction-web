@@ -29,7 +29,8 @@ class HomePage extends React.Component {
             mounted: false,
             inputContainsErrors: false,
             noErrorsMessage: 'No grammartical errors found.',
-            sentencesData: this.props.correctionData.sentences
+            sentencesData: this.props.correctionData.sentences,
+            heightToAnimate: 0
         };
     }
 
@@ -52,6 +53,10 @@ class HomePage extends React.Component {
                 requestingCorrections: nextProps.requestingCorrections
             });
         }
+    }
+
+    componentDidUpdate() {
+        this.updateHeight();
     }
 
     onInputValueChange = e => {
@@ -121,14 +126,21 @@ class HomePage extends React.Component {
         this.updateStateAfterApplying(error);
     };
 
+    updateHeight() {
+        if (this.state.heightToAnimate !== this.div.scrollHeight)
+            this.setState({ heightToAnimate: this.div.scrollHeight });
+    }
+
     render() {
         const {
             requestingCorrections,
             mounted,
             inputContainsErrors,
-            noErrorsMessage
+            noErrorsMessage,
+            heightToAnimate
         } = this.state;
         const { initState } = this.props;
+        const currentHeight = heightToAnimate || 0;
 
         let containsErrors = false;
         let grammarChecked = false;
@@ -173,76 +185,102 @@ class HomePage extends React.Component {
                                             value={this.state.inputText}
                                         />
                                     </div>
-                                    {initState !== 'LOADING' && (
-                                        <div className="container">
-                                            <div className="row">
-                                                <div className="col-sm">
-                                                    <Button
-                                                        onClick={this.onSubmit}
-                                                        disabled={
-                                                            requestingCorrections
-                                                        }
-                                                        style={{
-                                                            marginTop: '26px',
-                                                            marginBottom: '0px',
-                                                            marginLeft: 'auto'
-                                                        }}
-                                                    >
-                                                        Check Grammar
-                                                    </Button>
-                                                </div>
-                                                <div className="col-sm">
-                                                    <Button
-                                                        onClick={
-                                                            this
-                                                                .onCopyToClipboard
-                                                        }
-                                                        backgroundColor="#c6c8ca"
-                                                        shadowColor="#d6d8d9"
-                                                        style={{
-                                                            marginTop: '26px',
-                                                            marginRight: 'auto',
-                                                            marginBottom: '0px'
-                                                        }}
-                                                    >
-                                                        Copy Text
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {initState === 'LOADING' && (
+                                    <div
+                                        id="mainWrapper"
+                                        style={{ height: `${currentHeight}px` }}
+                                    >
                                         <div
-                                            style={{
-                                                textAlign: 'center',
-                                                paddingTop: '26px'
+                                            className="contentWrapper"
+                                            ref={div => {
+                                                this.div = div;
                                             }}
                                         >
-                                            <LoadingAnimation />
+                                            {initState !== 'LOADING' && (
+                                                <div className="container">
+                                                    <div className="row component-fade-in">
+                                                        <div className="col-sm">
+                                                            <Button
+                                                                onClick={
+                                                                    this
+                                                                        .onSubmit
+                                                                }
+                                                                disabled={
+                                                                    requestingCorrections
+                                                                }
+                                                                style={{
+                                                                    marginTop:
+                                                                        '26px',
+                                                                    marginBottom:
+                                                                        '0px',
+                                                                    marginLeft:
+                                                                        'auto'
+                                                                }}
+                                                            >
+                                                                Check Grammar
+                                                            </Button>
+                                                        </div>
+                                                        <div className="col-sm">
+                                                            <Button
+                                                                onClick={
+                                                                    this
+                                                                        .onCopyToClipboard
+                                                                }
+                                                                backgroundColor="#c6c8ca"
+                                                                shadowColor="#d6d8d9"
+                                                                style={{
+                                                                    marginTop:
+                                                                        '26px',
+                                                                    marginRight:
+                                                                        'auto',
+                                                                    marginBottom:
+                                                                        '0px'
+                                                                }}
+                                                            >
+                                                                Copy Text
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {initState === 'LOADING' && (
+                                                <div
+                                                    className="component-fade-in"
+                                                    style={{
+                                                        textAlign: 'center',
+                                                        paddingTop: '26px'
+                                                    }}
+                                                >
+                                                    <LoadingAnimation />
+                                                </div>
+                                            )}
+                                            {initState === 'SUCCESS' &&
+                                                containsErrors && (
+                                                <div className="component-fade-in">
+                                                    <ErrorSuggestions
+                                                        sentencesData={
+                                                            this.state
+                                                                .sentencesData
+                                                        }
+                                                        applySuggestion={
+                                                            this
+                                                                .applySuggestion
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                            {initState === 'SUCCESS' &&
+                                                !containsErrors && (
+                                                <div className="p-t-30 component-fade-in">
+                                                    <div
+                                                        className="alert alert-success text-center"
+                                                        role="alert"
+                                                    >
+                                                        {noErrorsMessage}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                    {initState === 'SUCCESS' &&
-                                        containsErrors && (
-                                        <ErrorSuggestions
-                                            sentencesData={
-                                                this.state.sentencesData
-                                            }
-                                            applySuggestion={
-                                                this.applySuggestion
-                                            }
-                                        />
-                                    )}
-                                    {initState === 'SUCCESS' &&
-                                        !containsErrors && (
-                                        <div className="p-t-30">
-                                            <div
-                                                className="alert alert-success text-center"
-                                                role="alert"
-                                            >
-                                                {noErrorsMessage}
-                                            </div>
-                                        </div>
-                                    )}
+                                    </div>
                                 </div>
                             </div>
                         </form>

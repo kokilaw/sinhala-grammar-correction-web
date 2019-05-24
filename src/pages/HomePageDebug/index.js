@@ -30,7 +30,8 @@ class HomePageDebug extends React.Component {
             requestingCorrections: false,
             inputContainsErrors: false,
             mounted: false,
-            randomList: [1, 2, 3]
+            randomList: [1, 2, 3],
+            heightToAnimate: 0
         };
     }
 
@@ -48,6 +49,10 @@ class HomePageDebug extends React.Component {
                 requestingCorrections: nextProps.requestingCorrections
             });
         }
+    }
+
+    componentDidUpdate() {
+        this.updateHeight();
     }
 
     onInputValueChange = e => {
@@ -78,19 +83,28 @@ class HomePageDebug extends React.Component {
     });
 
     setSearchType = e => {
+        const inputValue = e.target.value.trim();
         this.setState({
-            searchType: e.target.value
+            searchType: inputValue
         });
     };
+
+    updateHeight() {
+        if (this.state.heightToAnimate !== this.div.scrollHeight)
+            this.setState({ heightToAnimate: this.div.scrollHeight });
+    }
 
     render() {
         const {
             searchType,
             requestingCorrections,
             inputContainsErrors,
-            mounted
+            inputSentence,
+            mounted,
+            heightToAnimate
         } = this.state;
         const { initState } = this.props;
+        const currentHeight = heightToAnimate || 0;
 
         let correctionData = {};
         let containsErrors = false;
@@ -128,6 +142,7 @@ class HomePageDebug extends React.Component {
                                         placeholder="Enter the sentence here..."
                                         onChange={this.onInputValueChange}
                                         disabled={requestingCorrections}
+                                        value={inputSentence}
                                     />
                                     <SearchTypeRadioButtons
                                         beamSearchLabel="Beam"
@@ -140,52 +155,70 @@ class HomePageDebug extends React.Component {
                                         setSearchType={this.setSearchType}
                                     />
                                 </div>
-                                {initState !== 'LOADING' && (
-                                    <Button
-                                        onClick={this.onSubmit}
-                                        style={{
-                                            marginTop: '26px',
-                                            marginRight: 'auto',
-                                            marginBottom: '0px',
-                                            marginLeft: 'auto'
-                                        }}
-                                        disabled={requestingCorrections}
-                                    >
-                                        Check Grammar
-                                    </Button>
-                                )}
-                                {initState === 'LOADING' && (
+                                <div
+                                    id="mainWrapper"
+                                    style={{ height: `${currentHeight}px` }}
+                                >
                                     <div
-                                        style={{
-                                            textAlign: 'center',
-                                            paddingTop: '20px'
+                                        className="contentWrapper"
+                                        ref={div => {
+                                            this.div = div;
                                         }}
                                     >
-                                        <LoadingAnimation />
+                                        {initState !== 'LOADING' && (
+                                            <div className="component-fade-in">
+                                                <Button
+                                                    onClick={this.onSubmit}
+                                                    style={{
+                                                        marginTop: '26px',
+                                                        marginRight: 'auto',
+                                                        marginBottom: '0px',
+                                                        marginLeft: 'auto'
+                                                    }}
+                                                    disabled={
+                                                        requestingCorrections
+                                                    }
+                                                >
+                                                    Check Grammar
+                                                </Button>
+                                            </div>
+                                        )}
+                                        {initState === 'LOADING' && (
+                                            <div
+                                                className="component-fade-in"
+                                                style={{
+                                                    textAlign: 'center',
+                                                    paddingTop: '20px'
+                                                }}
+                                            >
+                                                <LoadingAnimation />
+                                            </div>
+                                        )}
+                                        {initState === 'SUCCESS' && (
+                                            <div className="component-fade-in">
+                                                <SubTitle className="p-t-26">
+                                                    Suggestions
+                                                </SubTitle>
+                                                {/* <JSONFormatter data={correctionData} /> */}
+                                                <div
+                                                    className="m-t-26"
+                                                    style={{
+                                                        padding: '26px',
+                                                        borderRadius: '5px',
+                                                        backgroundColor:
+                                                            '#d4edda'
+                                                    }}
+                                                >
+                                                    <ReactJson
+                                                        src={correctionData}
+                                                        displayDataTypes={false}
+                                                        enableClipboard={false}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                                {initState === 'SUCCESS' && (
-                                    <div>
-                                        <SubTitle className="p-t-26">
-                                            Suggestions
-                                        </SubTitle>
-                                        {/* <JSONFormatter data={correctionData} /> */}
-                                        <div
-                                            className="m-t-26"
-                                            style={{
-                                                padding: '26px',
-                                                borderRadius: '5px',
-                                                backgroundColor: '#d4edda'
-                                            }}
-                                        >
-                                            <ReactJson
-                                                src={correctionData}
-                                                displayDataTypes={false}
-                                                enableClipboard={false}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
+                                </div>
                             </div>
                         </form>
                     </CSSTransition>
