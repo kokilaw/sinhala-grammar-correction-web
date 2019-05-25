@@ -36,7 +36,7 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         document.title = 'Sinhala Grammar Tool';
-        this.setState({ mounted: true });
+        this.updateMountState();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -133,6 +133,10 @@ class HomePage extends React.Component {
         if (this.state.heightToAnimate !== this.div.scrollHeight)
             this.setState({ heightToAnimate: this.div.scrollHeight });
     }
+
+    updateMountState = () => {
+        this.setState({ mounted: true });
+    };
 
     render() {
         const {
@@ -314,14 +318,14 @@ HomePage.defaultProps = {
     }
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
     initState: (state.correctionsReducer || {}).status || '',
     correctionData: state.correctionsReducer.data,
     error: state.correctionsReducer.error,
     requestingCorrections: (state.correctionsReducer || {}).status === 'LOADING'
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = dispatch => ({
     checkGrammar: request => dispatch(loadCorrectionsForSentence(request))
 });
 

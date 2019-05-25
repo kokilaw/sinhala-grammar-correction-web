@@ -28,9 +28,11 @@ const fallbackCopyTextToClipboard = text => {
 
     try {
         const successful = document.execCommand('copy');
-        const msg = successful
-            ? displayCopyingSuccessfulAlert()
-            : displayCopyingErrorAlert();
+        if (successful) {
+            displayCopyingSuccessfulAlert();
+        } else {
+            displayCopyingErrorAlert();
+        }
     } catch (err) {
         displayCopyingErrorAlert();
     }

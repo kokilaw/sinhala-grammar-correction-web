@@ -37,7 +37,7 @@ class HomePageDebug extends React.Component {
 
     componentDidMount() {
         document.title = 'Sinhala Grammar Tool - Debug';
-        this.setState({ mounted: true });
+        this.updateMountState();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -98,6 +98,10 @@ class HomePageDebug extends React.Component {
             this.setState({ heightToAnimate: this.div.scrollHeight });
     }
 
+    updateMountState = () => {
+        this.setState({ mounted: true });
+    };
+
     render() {
         const {
             searchType,
@@ -116,7 +120,6 @@ class HomePageDebug extends React.Component {
 
         if (initState === 'SUCCESS') {
             correctionData = this.props.correctionData;
-            console.log(correctionData);
             containsErrors = !correctionData.isCorrect;
             grammarChecked = true;
         }
@@ -249,14 +252,14 @@ HomePageDebug.defaultProps = {
     }
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
     initState: (state.correctionsReducer || {}).status || '',
     correctionData: state.correctionsReducer.data,
     error: state.correctionsReducer.error,
     requestingCorrections: (state.correctionsReducer || {}).status === 'LOADING'
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = dispatch => ({
     checkGrammar: request => dispatch(loadCorrectionsForSentence(request))
 });
 
